@@ -1,6 +1,6 @@
 {
     "name": "mcp-test-kits",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "A comprehensive MCP testing server for debugging and testing MCP clients",
     "author": "midodimori",
     "repository": {
