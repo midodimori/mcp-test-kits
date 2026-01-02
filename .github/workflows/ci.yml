@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    # Skip CI for release commits made by github-actions bot
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: ["3.13"]
+        node-version: ["20"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: typescript/package-lock.json
+
+      - name: Install Python dependencies
+        run: cd python && uv sync --all-extras
+
+      - name: Install TypeScript dependencies
+        run: cd typescript && npm ci
+
+      - name: Build TypeScript
+        run: cd typescript && npm run build
+
+      - name: Run Python lint
+        run: make py-lint
+
+      - name: Run TypeScript lint
+        run: make ts-lint
+
+      - name: Run Python test
+        run: make py-test
+
+      - name: Run TypeScript test
+        run: make ts-test
+
+      - name: Spec comparison
+        run: make spec-compare

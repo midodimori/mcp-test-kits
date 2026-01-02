@@ -1,0 +1,64 @@
+{
+    "prompts": [
+        {
+            "name": "simple_prompt",
+            "description": "A basic prompt with no arguments",
+            "arguments": [],
+            "template": "You are a helpful assistant. Please respond concisely and accurately."
+        },
+        {
+            "name": "greeting_prompt",
+            "description": "Generate a greeting message",
+            "arguments": [
+                {
+                    "name": "name",
+                    "description": "Name of the person to greet",
+                    "required": true
+                },
+                {
+                    "name": "style",
+                    "description": "Greeting style (formal, casual, friendly)",
+                    "required": false,
+                    "default": "friendly"
+                }
+            ],
+            "template": "Generate a {{style}} greeting for {{name}}."
+        },
+        {
+            "name": "template_prompt",
+            "description": "A template with multiple arguments",
+            "arguments": [
+                {
+                    "name": "topic",
+                    "description": "Main topic",
+                    "required": true
+                },
+                {
+                    "name": "context",
+                    "description": "Additional context",
+                    "required": false
+                },
+                {
+                    "name": "length",
+                    "description": "Desired length (short, medium, long)",
+                    "required": false,
+                    "default": "medium"
+                }
+            ],
+            "template": "Write a {{length}} explanation about {{topic}}.{{#context}} Context: {{context}}{{/context}}"
+        },
+        {
+            "name": "multi_message_prompt",
+            "description": "Prompt that returns multiple messages",
+            "arguments": [
+                {
+                    "name": "count",
+                    "description": "Number of messages to generate",
+                    "required": true
+                }
+            ],
+            "template": "Generate {{count}} distinct helpful messages.",
+            "multiMessage": true
+        }
+    ]
+}

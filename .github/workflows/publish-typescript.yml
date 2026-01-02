@@ -1,0 +1,91 @@
+name: Publish TypeScript (npm + Docker)
+
+on:
+  release:
+    types: [published]
+  push:
+    tags:
+      - 'typescript-v*'
+  workflow_dispatch: # Allow manual triggering
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write # Required for npm trusted publishing
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}-typescript
+
+jobs:
+  publish-npm:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: cd typescript && npm ci
+
+      - name: Build
+        run: cd typescript && npm run build
+
+      - name: Run lint
+        run: make ts-lint
+
+      - name: Run tests
+        run: make ts-test
+
+      - name: Verify spec
+        run: make ts-spec-compare
+
+      - name: Publish to npm with provenance
+        run: cd typescript && npm publish --provenance --access public
+
+  publish-docker:
+    name: Publish to Docker Registry
+    runs-on: ubuntu-latest
+    needs: publish-npm # Docker depends on successful npm publish
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile.typescript
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

@@ -1,0 +1,136 @@
+{
+    "tools": [
+        {
+            "name": "echo",
+            "description": "Returns the input message unchanged",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "description": "The message to echo"
+                    }
+                },
+                "required": [
+                    "message"
+                ]
+            }
+        },
+        {
+            "name": "add",
+            "description": "Adds two numbers together",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "a": {
+                        "type": "number",
+                        "description": "First number"
+                    },
+                    "b": {
+                        "type": "number",
+                        "description": "Second number"
+                    }
+                },
+                "required": [
+                    "a",
+                    "b"
+                ]
+            }
+        },
+        {
+            "name": "multiply",
+            "description": "Multiplies two numbers",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "x": {
+                        "type": "number",
+                        "description": "First number"
+                    },
+                    "y": {
+                        "type": "number",
+                        "description": "Second number"
+                    }
+                },
+                "required": [
+                    "x",
+                    "y"
+                ]
+            }
+        },
+        {
+            "name": "reverse_string",
+            "description": "Reverses a string",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "text": {
+                        "type": "string",
+                        "description": "Text to reverse"
+                    }
+                },
+                "required": [
+                    "text"
+                ]
+            }
+        },
+        {
+            "name": "generate_uuid",
+            "description": "Generates a random UUID",
+            "inputSchema": {
+                "type": "object",
+                "properties": {}
+            }
+        },
+        {
+            "name": "get_timestamp",
+            "description": "Returns the current timestamp",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "format": {
+                        "type": "string",
+                        "description": "Format: 'unix' or 'iso'",
+                        "enum": [
+                            "unix",
+                            "iso"
+                        ],
+                        "default": "iso"
+                    }
+                }
+            }
+        },
+        {
+            "name": "sample_error",
+            "description": "Always throws an error (for testing error handling)",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "error_message": {
+                        "type": "string",
+                        "description": "Custom error message",
+                        "default": "This is a test error"
+                    }
+                }
+            }
+        },
+        {
+            "name": "long_running_task",
+            "description": "Simulates a long-running operation (sleeps for specified seconds)",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "duration": {
+                        "type": "number",
+                        "description": "Duration in seconds (max 10)",
+                        "minimum": 0,
+                        "maximum": 10
+                    }
+                },
+                "required": [
+                    "duration"
+                ]
+            }
+        }
+    ]
+}

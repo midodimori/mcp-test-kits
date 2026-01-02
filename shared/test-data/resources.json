@@ -1,0 +1,47 @@
+{
+    "resources": [
+        {
+            "uri": "test://static/greeting",
+            "name": "Static Greeting",
+            "description": "A simple static text resource",
+            "mimeType": "text/plain",
+            "content": "Hello from mcp-test-kits!"
+        },
+        {
+            "uri": "test://static/numbers",
+            "name": "Number List",
+            "description": "A list of numbers (JSON)",
+            "mimeType": "application/json",
+            "content": {
+                "numbers": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                ]
+            }
+        },
+        {
+            "uri": "test://dynamic/timestamp",
+            "name": "Current Timestamp",
+            "description": "Dynamically generated current timestamp",
+            "mimeType": "application/json",
+            "dynamic": true
+        },
+        {
+            "uri": "test://dynamic/random",
+            "name": "Random Number",
+            "description": "Generates a random number between 0-100",
+            "mimeType": "application/json",
+            "dynamic": true
+        },
+        {
+            "uri": "test://large-text",
+            "name": "Large Text Resource",
+            "description": "A large text resource for testing pagination/performance",
+            "mimeType": "text/plain",
+            "large": true
+        }
+    ]
+}

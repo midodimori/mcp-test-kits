@@ -1,0 +1,39 @@
+# TypeScript MCP Test Kits Dockerfile
+FROM node:20-slim AS builder
+
+WORKDIR /app
+
+# Copy package files
+COPY typescript/package*.json ./
+
+# Install all dependencies (including dev for build)
+RUN npm ci
+
+# Copy source
+COPY typescript/tsconfig.json ./
+COPY typescript/src/ ./src/
+
+# Build TypeScript
+RUN npm run build
+
+# Runtime stage
+FROM node:20-slim
+
+WORKDIR /app
+
+# Copy package files and install production only
+COPY typescript/package*.json ./
+RUN npm ci --omit=dev
+
+# Copy built files
+COPY --from=builder /app/dist ./dist
+
+# Default to stdio transport
+ENTRYPOINT ["node", "dist/index.js"]
+CMD []
+
+# Usage (from project root):
+# Build:   docker build -f docker/Dockerfile.typescript -t mcp-test-kits:typescript .
+# stdio:   docker run -i --rm mcp-test-kits:typescript
+# HTTP:    docker run -p 3000:3000 mcp-test-kits:typescript --transport http --host 0.0.0.0
+# SSE:     docker run -p 3000:3000 mcp-test-kits:typescript --transport sse --host 0.0.0.0
