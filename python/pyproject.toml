@@ -1,6 +1,6 @@
 [project]
 name = "mcp-test-kits"
-version = "0.0.0"
+version = "0.0.1"
 description = "A comprehensive MCP testing server for debugging and testing MCP clients"
 readme = "README.md"
 license = { text = "MIT" }
