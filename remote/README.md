@@ -116,7 +116,7 @@ MCP client config:
 
 ---
 
-## GitHub Container Registry
+## Docker Registry
 
 ### stdio
 
