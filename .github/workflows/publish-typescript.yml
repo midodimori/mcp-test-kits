@@ -6,6 +6,8 @@ on:
   push:
     tags:
       - 'typescript-v*'
+    branches:
+      - main  # Makes workflow visible without triggering jobs
   workflow_dispatch: # Allow manual triggering
 
 permissions:
@@ -20,6 +22,8 @@ env:
 jobs:
   publish-npm:
     name: Publish to npm
+    # Only run on release/tag events or manual trigger, not regular pushes
+    if: github.event_name != 'push' || startsWith(github.ref, 'refs/tags/typescript-v')
     runs-on: ubuntu-latest
 
     steps:
