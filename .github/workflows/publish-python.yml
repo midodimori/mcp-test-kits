@@ -6,8 +6,6 @@ on:
   push:
     tags:
       - 'python-v*'
-    branches:
-      - main  # Makes workflow visible without triggering jobs
   workflow_dispatch: # Allow manual triggering
 
 permissions:
@@ -86,10 +84,8 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          flavor: |
-            prefix=python-v,onlatest=false
           tags: |
-            type=semver,pattern={{version}}
+            type=match,pattern=python-v(.*),group=1
             type=raw,value=latest
 
       - name: Build and push

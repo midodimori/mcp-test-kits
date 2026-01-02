@@ -6,8 +6,6 @@ on:
   push:
     tags:
       - 'typescript-v*'
-    branches:
-      - main  # Makes workflow visible without triggering jobs
   workflow_dispatch: # Allow manual triggering
 
 permissions:
@@ -78,10 +76,8 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          flavor: |
-            prefix=typescript-v,onlatest=false
           tags: |
-            type=semver,pattern={{version}}
+            type=match,pattern=typescript-v(.*),group=1
             type=raw,value=latest
 
       - name: Build and push
