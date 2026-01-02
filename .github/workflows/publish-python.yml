@@ -86,9 +86,11 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          flavor: |
+            prefix=python-v,onlatest=false
           tags: |
-            type=match,pattern=python-v(.*),group=1
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=semver,pattern={{version}}
+            type=raw,value=latest
 
       - name: Build and push
         uses: docker/build-push-action@v6
