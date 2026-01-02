@@ -19,7 +19,8 @@ uv sync
     "mcp-test-kits": {
       "command": "uv",
       "args": ["run", "mcp-test-kits"],
-      "cwd": "/path/to/mcp-test-kits/python"
+      "cwd": "/path/to/mcp-test-kits/python",
+      "transport": "stdio"
     }
   }
 }
@@ -39,7 +40,8 @@ MCP client config:
 {
   "mcpServers": {
     "mcp-test-kits": {
-      "url": "http://localhost:3000/sse"
+      "url": "http://localhost:3000/mcp",
+      "transport": "http"
     }
   }
 }
@@ -59,7 +61,8 @@ MCP client config:
 {
   "mcpServers": {
     "mcp-test-kits": {
-      "url": "http://localhost:3000/mcp"
+      "url": "http://localhost:3000/sse",
+      "transport": "sse"
     }
   }
 }

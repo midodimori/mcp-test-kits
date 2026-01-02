@@ -13,7 +13,8 @@ Run without cloning the repository.
   "mcpServers": {
     "mcp-test-kits": {
       "command": "uvx",
-      "args": ["mcp-test-kits"]
+      "args": ["mcp-test-kits"],
+      "transport": "stdio"
     }
   }
 }
@@ -31,7 +32,8 @@ MCP client config:
 {
   "mcpServers": {
     "mcp-test-kits": {
-      "url": "http://localhost:3000/mcp"
+      "url": "http://localhost:3000/mcp",
+      "transport": "http"
     }
   }
 }
@@ -49,7 +51,8 @@ MCP client config:
 {
   "mcpServers": {
     "mcp-test-kits": {
-      "url": "http://localhost:3000/sse"
+      "url": "http://localhost:3000/sse",
+      "transport": "sse"
     }
   }
 }
@@ -66,7 +69,8 @@ MCP client config:
   "mcpServers": {
     "mcp-test-kits": {
       "command": "npx",
-      "args": ["-y", "mcp-test-kits"]
+      "args": ["-y", "mcp-test-kits"],
+      "transport": "stdio"
     }
   }
 }
@@ -84,7 +88,8 @@ MCP client config:
 {
   "mcpServers": {
     "mcp-test-kits": {
-      "url": "http://localhost:3000/mcp"
+      "url": "http://localhost:3000/mcp",
+      "transport": "http"
     }
   }
 }
@@ -102,7 +107,8 @@ MCP client config:
 {
   "mcpServers": {
     "mcp-test-kits": {
-      "url": "http://localhost:3000/sse"
+      "url": "http://localhost:3000/sse",
+      "transport": "sse"
     }
   }
 }
@@ -110,7 +116,7 @@ MCP client config:
 
 ---
 
-## Docker Hub
+## GitHub Container Registry
 
 ### stdio
 
@@ -119,7 +125,8 @@ MCP client config:
   "mcpServers": {
     "mcp-test-kits": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "ghcr.io/midodimori/mcp-test-kits-python"]
+      "args": ["run", "-i", "--rm", "ghcr.io/midodimori/mcp-test-kits-python"],
+      "transport": "stdio"
     }
   }
 }
@@ -137,7 +144,8 @@ MCP client config:
 {
   "mcpServers": {
     "mcp-test-kits": {
-      "url": "http://localhost:3000/mcp"
+      "url": "http://localhost:3000/mcp",
+      "transport": "http"
     }
   }
 }
@@ -155,7 +163,8 @@ MCP client config:
 {
   "mcpServers": {
     "mcp-test-kits": {
-      "url": "http://localhost:3000/sse"
+      "url": "http://localhost:3000/sse",
+      "transport": "sse"
     }
   }
 }

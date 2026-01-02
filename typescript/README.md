@@ -20,7 +20,8 @@ npm run build
     "mcp-test-kits": {
       "command": "node",
       "args": ["dist/index.js"],
-      "cwd": "/path/to/mcp-test-kits/typescript"
+      "cwd": "/path/to/mcp-test-kits/typescript",
+      "transport": "stdio"
     }
   }
 }
@@ -40,7 +41,8 @@ MCP client config:
 {
   "mcpServers": {
     "mcp-test-kits": {
-      "url": "http://localhost:3000/sse"
+      "url": "http://localhost:3000/mcp",
+      "transport": "http"
     }
   }
 }
@@ -60,7 +62,8 @@ MCP client config:
 {
   "mcpServers": {
     "mcp-test-kits": {
-      "url": "http://localhost:3000/mcp"
+      "url": "http://localhost:3000/sse",
+      "transport": "sse"
     }
   }
 }
