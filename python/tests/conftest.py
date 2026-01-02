@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import socket
 import subprocess
 import time
 from contextlib import asynccontextmanager
@@ -15,6 +16,30 @@ from mcp.client.streamable_http import streamable_http_client
 
 if TYPE_CHECKING:
     from collections.abc import AsyncGenerator
+
+
+def wait_for_port(host: str, port: int, timeout: float = 10.0) -> bool:
+    """Wait for a TCP port to become available.
+
+    Args:
+        host: Hostname to check
+        port: Port number to check
+        timeout: Maximum time to wait in seconds
+
+    Returns:
+        True if port became available, False if timeout
+    """
+    start_time = time.time()
+    while time.time() - start_time < timeout:
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+                sock.settimeout(1)
+                if sock.connect_ex((host, port)) == 0:
+                    return True
+        except Exception:
+            pass
+        time.sleep(0.1)
+    return False
 
 
 @pytest.fixture
@@ -38,31 +63,69 @@ def stdio_session():
 @pytest.fixture
 def http_server():
     """Start HTTP server and return base URL."""
+    host = "localhost"
+    port = 3001
+
+    # Don't pipe - let output go to console for debugging in CI
     proc = subprocess.Popen(
-        ["uv", "run", "mcp-test-kits", "--transport", "http", "--port", "3001"],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        ["uv", "run", "mcp-test-kits", "--transport", "http", "--port", str(port)],
     )
-    # Wait for server to start
-    time.sleep(2)
-    yield "http://localhost:3001"
-    proc.terminate()
-    proc.wait()
+
+    try:
+        # Wait for port to be ready (up to 10 seconds)
+        if not wait_for_port(host, port, timeout=10.0):
+            # Check if process crashed
+            if proc.poll() is not None:
+                raise RuntimeError(
+                    f"HTTP server process exited with code {proc.returncode}"
+                )
+            raise RuntimeError(
+                f"HTTP server failed to start on port {port} within 10 seconds"
+            )
+
+        yield f"http://{host}:{port}"
+    finally:
+        # Clean up
+        proc.terminate()
+        try:
+            proc.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+            proc.wait()
 
 
 @pytest.fixture
 def sse_server():
     """Start SSE server and return base URL."""
+    host = "localhost"
+    port = 3002
+
+    # Don't pipe - let output go to console for debugging in CI
     proc = subprocess.Popen(
-        ["uv", "run", "mcp-test-kits", "--transport", "sse", "--port", "3002"],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        ["uv", "run", "mcp-test-kits", "--transport", "sse", "--port", str(port)],
     )
-    # Wait for server to start
-    time.sleep(2)
-    yield "http://localhost:3002"
-    proc.terminate()
-    proc.wait()
+
+    try:
+        # Wait for port to be ready (up to 10 seconds)
+        if not wait_for_port(host, port, timeout=10.0):
+            # Check if process crashed
+            if proc.poll() is not None:
+                raise RuntimeError(
+                    f"SSE server process exited with code {proc.returncode}"
+                )
+            raise RuntimeError(
+                f"SSE server failed to start on port {port} within 10 seconds"
+            )
+
+        yield f"http://{host}:{port}"
+    finally:
+        # Clean up
+        proc.terminate()
+        try:
+            proc.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+            proc.wait()
 
 
 @pytest.fixture
