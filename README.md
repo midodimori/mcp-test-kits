@@ -12,7 +12,7 @@ A comprehensive MCP testing server for debugging and testing MCP clients. Availa
 
 | Method | Guide |
 |--------|-------|
-| **uvx / npx / Docker Hub** | [remote/README.md](remote/README.md) |
+| **uvx / npx / docker registry** | [remote/README.md](remote/README.md) |
 | **Python from source** | [python/README.md](python/README.md) |
 | **TypeScript from source** | [typescript/README.md](typescript/README.md) |
 | **Docker from source** | [docker/README.md](docker/README.md) |
