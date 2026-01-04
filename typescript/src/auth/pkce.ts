@@ -2,7 +2,7 @@
  * PKCE (Proof Key for Code Exchange) verification
  */
 
-import { createHash } from "crypto";
+import { createHash, timingSafeEqual } from "crypto";
 
 /**
  * Verify PKCE S256 code challenge
@@ -25,5 +25,12 @@ export function verifyCodeChallenge(
     .replace(/\//g, "_")
     .replace(/=/g, "");
 
-  return computedChallenge === challenge;
+  // Use constant-time comparison to prevent timing attacks
+  if (computedChallenge.length !== challenge.length) {
+    return false;
+  }
+  return timingSafeEqual(
+    Buffer.from(computedChallenge),
+    Buffer.from(challenge),
+  );
 }

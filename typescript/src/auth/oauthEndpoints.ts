@@ -393,6 +393,18 @@ function registrationError(
 }
 
 /**
+ * Escape HTML special characters to prevent XSS
+ */
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+/**
  * Render consent form HTML
  */
 function renderConsentForm(
@@ -401,7 +413,7 @@ function renderConsentForm(
 ): void {
   const scopesHtml = params.scope
     .split(" ")
-    .map((s) => `• ${s}`)
+    .map((s) => `• ${escapeHtml(s)}`)
     .join("<br>");
 
   const html = `
@@ -419,9 +431,9 @@ function renderConsentForm(
 </head>
 <body>
   <h1>Authorization Request</h1>
-  <p><strong>Client:</strong> ${params.client_id}</p>
-  <p><strong>Redirect URI:</strong> ${params.redirect_uri}</p>
-  <p><strong>Resource:</strong> ${params.resource}</p>
+  <p><strong>Client:</strong> ${escapeHtml(params.client_id)}</p>
+  <p><strong>Redirect URI:</strong> ${escapeHtml(params.redirect_uri)}</p>
+  <p><strong>Resource:</strong> ${escapeHtml(params.resource)}</p>
 
   <div class="scopes">
     <strong>Requested Scopes:</strong><br>
@@ -429,13 +441,13 @@ function renderConsentForm(
   </div>
 
   <form method="POST" action="/oauth/authorize">
-    <input type="hidden" name="client_id" value="${params.client_id}">
-    <input type="hidden" name="redirect_uri" value="${params.redirect_uri}">
-    <input type="hidden" name="scope" value="${params.scope}">
-    <input type="hidden" name="state" value="${params.state || ""}">
-    <input type="hidden" name="code_challenge" value="${params.code_challenge}">
-    <input type="hidden" name="code_challenge_method" value="${params.code_challenge_method}">
-    <input type="hidden" name="resource" value="${params.resource}">
+    <input type="hidden" name="client_id" value="${escapeHtml(params.client_id)}">
+    <input type="hidden" name="redirect_uri" value="${escapeHtml(params.redirect_uri)}">
+    <input type="hidden" name="scope" value="${escapeHtml(params.scope)}">
+    <input type="hidden" name="state" value="${escapeHtml(params.state || "")}">
+    <input type="hidden" name="code_challenge" value="${escapeHtml(params.code_challenge)}">
+    <input type="hidden" name="code_challenge_method" value="${escapeHtml(params.code_challenge_method)}">
+    <input type="hidden" name="resource" value="${escapeHtml(params.resource)}">
 
     <button type="submit" name="action" value="approve" class="approve">Approve</button>
     <button type="submit" name="action" value="deny" class="deny">Deny</button>

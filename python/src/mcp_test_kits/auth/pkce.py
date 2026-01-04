@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import base64
 import hashlib
+import hmac
 
 
 def verify_code_challenge(verifier: str, challenge: str) -> bool:
@@ -22,4 +23,5 @@ def verify_code_challenge(verifier: str, challenge: str) -> bool:
     # Base64 URL-encode without padding
     computed_challenge = base64.urlsafe_b64encode(digest).rstrip(b"=").decode("ascii")
 
-    return computed_challenge == challenge
+    # Use constant-time comparison to prevent timing attacks
+    return hmac.compare_digest(computed_challenge, challenge)

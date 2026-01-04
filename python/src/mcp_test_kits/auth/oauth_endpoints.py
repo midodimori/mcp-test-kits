@@ -378,9 +378,21 @@ def _registration_error(error: str, error_description: str | None = None) -> Res
 
 def _render_consent_form(params: dict[str, str]) -> HTMLResponse:
     """Render consent form HTML."""
-    scopes_html = "<br>".join(f"• {scope}" for scope in params["scope"].split())
+    import html as html_module
 
-    html = f"""
+    # Escape all user-controlled values to prevent HTML injection
+    client_id = html_module.escape(params["client_id"])
+    redirect_uri = html_module.escape(params["redirect_uri"])
+    resource = html_module.escape(params["resource"])
+    scope = html_module.escape(params["scope"])
+    state = html_module.escape(params.get("state", ""))
+    code_challenge = html_module.escape(params["code_challenge"])
+    code_challenge_method = html_module.escape(params["code_challenge_method"])
+    scopes_html = "<br>".join(
+        f"• {html_module.escape(s)}" for s in params["scope"].split()
+    )
+
+    html_content = f"""
 <!DOCTYPE html>
 <html>
 <head>
@@ -395,9 +407,9 @@ def _render_consent_form(params: dict[str, str]) -> HTMLResponse:
 </head>
 <body>
   <h1>Authorization Request</h1>
-  <p><strong>Client:</strong> {params["client_id"]}</p>
-  <p><strong>Redirect URI:</strong> {params["redirect_uri"]}</p>
-  <p><strong>Resource:</strong> {params["resource"]}</p>
+  <p><strong>Client:</strong> {client_id}</p>
+  <p><strong>Redirect URI:</strong> {redirect_uri}</p>
+  <p><strong>Resource:</strong> {resource}</p>
 
   <div class="scopes">
     <strong>Requested Scopes:</strong><br>
@@ -405,13 +417,13 @@ def _render_consent_form(params: dict[str, str]) -> HTMLResponse:
   </div>
 
   <form method="POST" action="/oauth/authorize">
-    <input type="hidden" name="client_id" value="{params["client_id"]}">
-    <input type="hidden" name="redirect_uri" value="{params["redirect_uri"]}">
-    <input type="hidden" name="scope" value="{params["scope"]}">
-    <input type="hidden" name="state" value="{params.get("state", "")}">
-    <input type="hidden" name="code_challenge" value="{params["code_challenge"]}">
-    <input type="hidden" name="code_challenge_method" value="{params["code_challenge_method"]}">
-    <input type="hidden" name="resource" value="{params["resource"]}">
+    <input type="hidden" name="client_id" value="{client_id}">
+    <input type="hidden" name="redirect_uri" value="{redirect_uri}">
+    <input type="hidden" name="scope" value="{scope}">
+    <input type="hidden" name="state" value="{state}">
+    <input type="hidden" name="code_challenge" value="{code_challenge}">
+    <input type="hidden" name="code_challenge_method" value="{code_challenge_method}">
+    <input type="hidden" name="resource" value="{resource}">
 
     <button type="submit" name="action" value="approve" class="approve">Approve</button>
     <button type="submit" name="action" value="deny" class="deny">Deny</button>
@@ -419,7 +431,7 @@ def _render_consent_form(params: dict[str, str]) -> HTMLResponse:
 </body>
 </html>
 """
-    return HTMLResponse(html)
+    return HTMLResponse(html_content)
 
 
 def _build_issuer(config: Config, request: Request) -> str:
