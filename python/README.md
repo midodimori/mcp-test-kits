@@ -47,6 +47,42 @@ MCP client config:
 }
 ```
 
+### With OAuth
+
+Start server:
+```bash
+uv run mcp-test-kits --transport http --port 3000 --enable-oauth
+# or auto-approve for testing
+uv run mcp-test-kits --transport http --port 3000 --enable-oauth --oauth-auto-approve
+```
+
+MCP client config (OAuth discovery automatic):
+```json
+{
+  "mcpServers": {
+    "mcp-test-kits": {
+      "url": "http://localhost:3000/mcp",
+      "transport": "http"
+    }
+  }
+}
+```
+
+Or with pre-obtained token:
+```json
+{
+  "mcpServers": {
+    "mcp-test-kits": {
+      "url": "http://localhost:3000/mcp",
+      "transport": "http",
+      "headers": {
+        "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+      }
+    }
+  }
+}
+```
+
 ---
 
 ## SSE
@@ -63,6 +99,42 @@ MCP client config:
     "mcp-test-kits": {
       "url": "http://localhost:3000/sse",
       "transport": "sse"
+    }
+  }
+}
+```
+
+### With OAuth
+
+Start server:
+```bash
+uv run mcp-test-kits --transport sse --port 3000 --enable-oauth
+# or auto-approve for testing
+uv run mcp-test-kits --transport sse --port 3000 --enable-oauth --oauth-auto-approve
+```
+
+MCP client config (OAuth discovery automatic):
+```json
+{
+  "mcpServers": {
+    "mcp-test-kits": {
+      "url": "http://localhost:3000/sse",
+      "transport": "sse"
+    }
+  }
+}
+```
+
+Or with pre-obtained token:
+```json
+{
+  "mcpServers": {
+    "mcp-test-kits": {
+      "url": "http://localhost:3000/sse",
+      "transport": "sse",
+      "headers": {
+        "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+      }
     }
   }
 }

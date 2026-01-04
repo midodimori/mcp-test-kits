@@ -27,6 +27,9 @@ Options:
       --no-tools          Disable tools capability
       --no-resources      Disable resources capability
       --no-prompts        Disable prompts capability
+      --enable-oauth      Enable OAuth authentication (HTTP/SSE only)
+      --oauth-auto-approve Auto-approve OAuth consent for testing
+      --oauth-issuer <url> OAuth issuer URL (default: server URL)
   -v, --version           Show version
   -h, --help              Show this help
 
@@ -53,6 +56,9 @@ async function main(): Promise<void> {
       "no-tools": { type: "boolean", default: false },
       "no-resources": { type: "boolean", default: false },
       "no-prompts": { type: "boolean", default: false },
+      "enable-oauth": { type: "boolean", default: false },
+      "oauth-auto-approve": { type: "boolean", default: false },
+      "oauth-issuer": { type: "string" },
       version: { type: "boolean", short: "v" },
       help: { type: "boolean", short: "h" },
     },
@@ -81,6 +87,13 @@ async function main(): Promise<void> {
       tools: !values["no-tools"],
       resources: !values["no-resources"],
       prompts: !values["no-prompts"],
+    },
+    oauth: {
+      enabled: values["enable-oauth"] || false,
+      autoApprove: values["oauth-auto-approve"] || false,
+      issuer: (values["oauth-issuer"] as string) || null,
+      tokenExpiration: 3600,
+      authorizationCodeTtl: 600,
     },
   });
 

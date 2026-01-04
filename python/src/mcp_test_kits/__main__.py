@@ -74,6 +74,22 @@ Examples:
         action="store_true",
         help="Disable prompts capability",
     )
+    # OAuth flags
+    parser.add_argument(
+        "--enable-oauth",
+        action="store_true",
+        help="Enable OAuth authentication (HTTP/SSE only)",
+    )
+    parser.add_argument(
+        "--oauth-auto-approve",
+        action="store_true",
+        help="Auto-approve OAuth consent for testing (requires --enable-oauth)",
+    )
+    parser.add_argument(
+        "--oauth-issuer",
+        type=str,
+        help="OAuth issuer URL (default: server URL)",
+    )
     parser.add_argument(
         "--version",
         "-v",
@@ -95,6 +111,10 @@ def main() -> None:
     config.capabilities.tools = not args.no_tools
     config.capabilities.resources = not args.no_resources
     config.capabilities.prompts = not args.no_prompts
+    config.oauth.enabled = args.enable_oauth
+    config.oauth.auto_approve = args.oauth_auto_approve
+    if args.oauth_issuer:
+        config.oauth.issuer = args.oauth_issuer
 
     # Create server
     mcp = create_server(config)

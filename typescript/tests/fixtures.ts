@@ -16,8 +16,8 @@ export async function createStdioClient(): Promise<{
     close: () => Promise<void>;
 }> {
     const transport = new StdioClientTransport({
-        command: "npx",
-        args: ["tsx", "src/index.ts"],
+        command: "node",
+        args: ["dist/index.js"],
     });
 
     const client = new Client({
@@ -42,7 +42,7 @@ export async function startHttpServer(port: number = 3001): Promise<{
     url: string;
     stop: () => void;
 }> {
-    const proc = spawn("npx", ["tsx", "src/index.ts", "--transport", "http", "--port", String(port)], {
+    const proc = spawn("node", ["dist/index.js", "--transport", "http", "--port", String(port)], {
         stdio: ["pipe", "pipe", "pipe"],
     });
 
@@ -73,7 +73,7 @@ export async function startSseServer(port: number = 3002): Promise<{
     url: string;
     stop: () => void;
 }> {
-    const proc = spawn("npx", ["tsx", "src/index.ts", "--transport", "sse", "--port", String(port)], {
+    const proc = spawn("node", ["dist/index.js", "--transport", "sse", "--port", String(port)], {
         stdio: ["pipe", "pipe", "pipe"],
     });
 
