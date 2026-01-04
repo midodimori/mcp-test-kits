@@ -49,7 +49,17 @@ jobs:
         run: make ts-spec-compare
 
       - name: Publish to npm with provenance
-        run: cd typescript && npm publish --provenance --access public
+        run: |
+          cd typescript
+          VERSION=$(node -p "require('./package.json').version")
+
+          # Check if version is already published
+          if npm view mcp-test-kits@$VERSION version 2>/dev/null; then
+            echo "Version $VERSION is already published to npm, skipping"
+            exit 0
+          fi
+
+          npm publish --provenance --access public
 
   publish-docker:
     name: Publish to Docker Registry
