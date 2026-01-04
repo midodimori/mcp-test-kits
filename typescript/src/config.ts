@@ -2,6 +2,8 @@
  * Configuration types for MCP Test Kits
  */
 
+import { OAuthConfig, defaultOAuthConfig } from "./auth/config.js";
+
 export interface ServerConfig {
   name: string;
   version: string;
@@ -27,7 +29,10 @@ export interface ConfigOptions {
   server: ServerConfig;
   transport: TransportConfig;
   capabilities: CapabilitiesConfig;
+  oauth: OAuthConfig;
 }
+
+export { OAuthConfig };
 
 /**
  * Configuration class with default values
@@ -36,6 +41,7 @@ export class Config implements ConfigOptions {
   server: ServerConfig;
   transport: TransportConfig;
   capabilities: CapabilitiesConfig;
+  oauth: OAuthConfig;
 
   constructor(options?: Partial<ConfigOptions>) {
     this.server = {
@@ -55,6 +61,18 @@ export class Config implements ConfigOptions {
       tools: options?.capabilities?.tools ?? true,
       resources: options?.capabilities?.resources ?? true,
       prompts: options?.capabilities?.prompts ?? true,
+    };
+
+    this.oauth = {
+      enabled: options?.oauth?.enabled ?? defaultOAuthConfig.enabled,
+      autoApprove:
+        options?.oauth?.autoApprove ?? defaultOAuthConfig.autoApprove,
+      issuer: options?.oauth?.issuer ?? defaultOAuthConfig.issuer,
+      tokenExpiration:
+        options?.oauth?.tokenExpiration ?? defaultOAuthConfig.tokenExpiration,
+      authorizationCodeTtl:
+        options?.oauth?.authorizationCodeTtl ??
+        defaultOAuthConfig.authorizationCodeTtl,
     };
   }
 }

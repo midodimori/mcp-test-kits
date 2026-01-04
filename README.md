@@ -7,6 +7,8 @@ A comprehensive MCP testing server for debugging and testing MCP clients. Availa
 - **8 Tools**: echo, add, multiply, reverse_string, generate_uuid, get_timestamp, sample_error, long_running_task
 - **5 Resources**: test://static/greeting, test://static/numbers, test://dynamic/timestamp, test://dynamic/random, test://large-text
 - **4 Prompts**: simple_prompt, greeting_prompt, template_prompt, multi_message_prompt
+- **3 Transports**: stdio, HTTP (Streamable HTTP), SSE (Server-Sent Events)
+- **OAuth 2.1 Support**: Authorization Code flow with PKCE for HTTP/SSE transports
 
 ## Quick Start
 
@@ -30,6 +32,9 @@ All implementations share the same CLI:
 | `--no-tools` | Disable tools | false |
 | `--no-resources` | Disable resources | false |
 | `--no-prompts` | Disable prompts | false |
+| `--enable-oauth` | Enable OAuth authentication (HTTP/SSE only) | false |
+| `--oauth-auto-approve` | Auto-approve OAuth consent for testing | false |
+| `--oauth-issuer <url>` | OAuth issuer URL | server URL |
 
 ## Development
 

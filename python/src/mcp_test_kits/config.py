@@ -6,6 +6,8 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
+from .auth import OAuthConfig
+
 
 class ServerConfig(BaseModel):
     """Server information configuration."""
@@ -42,3 +44,4 @@ class Config(BaseModel):
     server: ServerConfig = Field(default_factory=ServerConfig)
     transport: TransportConfig = Field(default_factory=TransportConfig)
     capabilities: CapabilitiesConfig = Field(default_factory=CapabilitiesConfig)
+    oauth: OAuthConfig = Field(default_factory=OAuthConfig)

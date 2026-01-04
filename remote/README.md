@@ -25,6 +25,8 @@ Run without cloning the repository.
 Start server:
 ```bash
 uvx mcp-test-kits --transport http --port 3000
+# With OAuth
+uvx mcp-test-kits --transport http --port 3000 --enable-oauth
 ```
 
 MCP client config:
@@ -44,6 +46,8 @@ MCP client config:
 Start server:
 ```bash
 uvx mcp-test-kits --transport sse --port 3000
+# With OAuth
+uvx mcp-test-kits --transport sse --port 3000 --enable-oauth
 ```
 
 MCP client config:
@@ -81,6 +85,8 @@ MCP client config:
 Start server:
 ```bash
 npx -y mcp-test-kits --transport http --port 3000
+# With OAuth
+npx -y mcp-test-kits --transport http --port 3000 --enable-oauth
 ```
 
 MCP client config:
@@ -100,6 +106,8 @@ MCP client config:
 Start server:
 ```bash
 npx -y mcp-test-kits --transport sse --port 3000
+# With OAuth
+npx -y mcp-test-kits --transport sse --port 3000 --enable-oauth
 ```
 
 MCP client config:
@@ -137,6 +145,8 @@ MCP client config:
 Start server:
 ```bash
 docker run -p 3000:3000 ghcr.io/midodimori/mcp-test-kits-python --transport http --host 0.0.0.0
+# With OAuth
+docker run -p 3000:3000 ghcr.io/midodimori/mcp-test-kits-python --transport http --host 0.0.0.0 --enable-oauth
 ```
 
 MCP client config:
@@ -156,6 +166,8 @@ MCP client config:
 Start server:
 ```bash
 docker run -p 3000:3000 ghcr.io/midodimori/mcp-test-kits-python --transport sse --host 0.0.0.0
+# With OAuth
+docker run -p 3000:3000 ghcr.io/midodimori/mcp-test-kits-python --transport sse --host 0.0.0.0 --enable-oauth
 ```
 
 MCP client config:

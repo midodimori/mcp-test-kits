@@ -47,6 +47,42 @@ MCP client config:
 }
 ```
 
+### With OAuth
+
+Start server:
+```bash
+docker run -p 3000:3000 mcp-test-kits:python --transport http --host 0.0.0.0 --enable-oauth
+# or auto-approve for testing
+docker run -p 3000:3000 mcp-test-kits:python --transport http --host 0.0.0.0 --enable-oauth --oauth-auto-approve
+```
+
+MCP client config (OAuth discovery automatic):
+```json
+{
+  "mcpServers": {
+    "mcp-test-kits": {
+      "url": "http://localhost:3000/mcp",
+      "transport": "http"
+    }
+  }
+}
+```
+
+Or with pre-obtained token:
+```json
+{
+  "mcpServers": {
+    "mcp-test-kits": {
+      "url": "http://localhost:3000/mcp",
+      "transport": "http",
+      "headers": {
+        "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+      }
+    }
+  }
+}
+```
+
 ---
 
 ## SSE
@@ -63,6 +99,42 @@ MCP client config:
     "mcp-test-kits": {
       "url": "http://localhost:3000/sse",
       "transport": "sse"
+    }
+  }
+}
+```
+
+### With OAuth
+
+Start server:
+```bash
+docker run -p 3000:3000 mcp-test-kits:python --transport sse --host 0.0.0.0 --enable-oauth
+# or auto-approve for testing
+docker run -p 3000:3000 mcp-test-kits:python --transport sse --host 0.0.0.0 --enable-oauth --oauth-auto-approve
+```
+
+MCP client config (OAuth discovery automatic):
+```json
+{
+  "mcpServers": {
+    "mcp-test-kits": {
+      "url": "http://localhost:3000/sse",
+      "transport": "sse"
+    }
+  }
+}
+```
+
+Or with pre-obtained token:
+```json
+{
+  "mcpServers": {
+    "mcp-test-kits": {
+      "url": "http://localhost:3000/sse",
+      "transport": "sse",
+      "headers": {
+        "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+      }
     }
   }
 }
