@@ -176,7 +176,7 @@ jobs:
 
       - name: Commit version bump
         run: |
-          git add typescript/package.json
+          git add typescript/package.json typescript/package-lock.json
           git commit -m "chore(typescript): bump version to $NEW_VERSION"
           git tag "typescript-v$NEW_VERSION"
 
